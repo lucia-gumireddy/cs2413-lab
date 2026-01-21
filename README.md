@@ -1,6 +1,6 @@
-# CS2314 Labs (Data Structures) — GitHub Workflow & Assignments
+# CS2413 Labs (Data Structures) — GitHub Workflow & Assignments
 
-Welcome to the **CS2314 lab repository**.  
+Welcome to the **CS2413 lab repository**.  
 This repository contains the starter code, lab exercises, and programming assignments for this semester.
 
 The main goals of this repo are:
