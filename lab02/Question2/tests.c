@@ -1,4 +1,4 @@
-#include "Student.h"
+#include "student.h"
 #include <stdio.h>
 
 static int fails = 0;
