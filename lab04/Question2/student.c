@@ -42,14 +42,35 @@ Note:
 /*
  * Definition for a binary tree node.
  */
+
+#include <stdbool.h>
+#include <stddef.h>
+
 struct TreeNode {
     int val;
     struct TreeNode *left;
     struct TreeNode *right;
 };
 
+static bool isMirror(struct TreeNode* t1, struct TreeNode* t2) {
+    if (t1 == NULL && t2 == NULL) {
+        return true;
+    }
+    if (t1 == NULL || t2 == NULL) {
+        return false;
+    }
+    if (t1->val != t2->val) {
+        return false;
+    }
 
+    return isMirror(t1->left, t2->right) &&
+           isMirror(t1->right, t2->left);
+}
 
 bool isSymmetric(struct TreeNode* root) {
-  // TODO: implement
+    if (root == NULL) {
+        return true;
+    }
+
+    return isMirror(root->left, root->right);
 }
