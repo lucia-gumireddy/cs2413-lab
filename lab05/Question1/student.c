@@ -33,10 +33,6 @@ has appeared before.
 
 #include <stdlib.h>
 
-/*
-A simple hash entry for integer value -> index mapping.
-This implementation uses separate chaining.
-*/
 typedef struct Node {
     int key;
     int value;
@@ -62,6 +58,7 @@ static void insert(Node* table[], int key, int value) {
 static int find(Node* table[], int key, int* value) {
     int idx = hash(key);
     Node* curr = table[idx];
+
     while (curr != NULL) {
         if (curr->key == key) {
             *value = curr->value;
@@ -90,15 +87,18 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
         int complement = target - nums[i];
         int foundIndex;
 
+        // Check if complement already exists
         if (find(table, complement, &foundIndex)) {
             int* result = (int*)malloc(2 * sizeof(int));
             result[0] = foundIndex;
             result[1] = i;
             *returnSize = 2;
+
             freeTable(table);
             return result;
         }
 
+        // Otherwise store current number
         insert(table, nums[i], i);
     }
 
