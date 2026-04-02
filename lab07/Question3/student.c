@@ -32,9 +32,42 @@ Notes:
 - The sorting should be done in ascending order.
 */
 
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+/* Partition function */
+static int partition(int arr[], int low, int high) {
+    int pivot = arr[high];  // last element as pivot
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+
+    swap(&arr[i + 1], &arr[high]);
+    return i + 1;
+}
+
+/* Recursive helper */
+static void quickSortHelper(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSortHelper(arr, low, pi - 1);
+        quickSortHelper(arr, pi + 1, high);
+    }
+}
+
+/* Main function */
 void quickSort(int arr[], int size) {
-    // TODO: implement quick sort
-    (void)arr;
-    (void)size;
+    if (size <= 1) return;
+
+    quickSortHelper(arr, 0, size - 1);
 }
 
