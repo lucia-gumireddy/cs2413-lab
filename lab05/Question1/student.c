@@ -1,5 +1,5 @@
 /*
-Question 1: Two Sum (Hash-based)
+Question 1: Two Sum
 
 Description:
 Given an array of integers nums and an integer target, return the indices
@@ -8,27 +8,23 @@ of the two numbers such that they add up to target.
 You may assume that each input has exactly one solution, and you may not
 use the same element twice.
 
-You must solve this problem using a hash-table style idea (not brute force).
+For this lab, you should solve the problem using a hash-based idea.
+
+Function:
+int* twoSum(int* nums, int numsSize, int target, int* returnSize);
+
+Notes:
+- Return a dynamically allocated array of size 2.
+- Set *returnSize = 2 before returning.
+- The returned array will be freed by the caller.
 
 Example:
-Input:
-nums = [2, 7, 11, 15], target = 9
-
-Output:
-[0, 1]
-
-Explanation:
-nums[0] + nums[1] = 2 + 7 = 9
-
-Instructions:
-- Implement the function below.
-- Return a dynamically allocated array of size 2.
-- Set *returnSize = 2.
-- The caller will free the returned array.
+Input:  nums = [2, 7, 11, 15], target = 9
+Output: [0, 1]
 
 Hint:
-As you scan the array, for each nums[i], check whether target - nums[i]
-has appeared before.
+As you scan the array, for each nums[i], think about whether the value
+(target - nums[i]) has already appeared before.
 */
 
 #include <stdlib.h>
@@ -40,6 +36,41 @@ typedef struct Node {
 } Node;
 
 #define TABLE_SIZE 1009
+
+static int hash(int key);
+static void insert(Node* table[], int key, int value);
+static int find(Node* table[], int key, int* value);
+static void freeTable(Node* table[]);
+
+int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
+    Node* table[TABLE_SIZE];
+
+    // Initialize table
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        table[i] = NULL;
+    }
+
+    for (int i = 0; i < numsSize; i++) {
+        int complement = target - nums[i];
+        int foundIndex;
+
+        if (find(table, complement, &foundIndex)) {
+            int* result = (int*)malloc(2 * sizeof(int));
+            result[0] = foundIndex;
+            result[1] = i;
+            *returnSize = 2;
+
+            freeTable(table);
+            return result;
+        }
+
+        insert(table, nums[i], i);
+    }
+
+    *returnSize = 0;
+    freeTable(table);
+    return NULL;
+}
 
 static int hash(int key) {
     if (key < 0) key = -key;
@@ -78,31 +109,4 @@ static void freeTable(Node* table[]) {
             free(temp);
         }
     }
-}
-
-int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
-    Node* table[TABLE_SIZE] = {0};
-
-    for (int i = 0; i < numsSize; i++) {
-        int complement = target - nums[i];
-        int foundIndex;
-
-        // Check if complement already exists
-        if (find(table, complement, &foundIndex)) {
-            int* result = (int*)malloc(2 * sizeof(int));
-            result[0] = foundIndex;
-            result[1] = i;
-            *returnSize = 2;
-
-            freeTable(table);
-            return result;
-        }
-
-        // Otherwise store current number
-        insert(table, nums[i], i);
-    }
-
-    *returnSize = 0;
-    freeTable(table);
-    return NULL;
 }
