@@ -22,6 +22,25 @@ Note:
 */
 
 int strStr(char* haystack, char* needle) {
-    // TODO: implement
+    int n = strlen(haystack);
+    int m = strlen(needle);
 
+    // Edge case: empty needle
+    if (m == 0) return 0;
+
+    for (int i = 0; i <= n - m; i++) {
+        int j = 0;
+
+        // Compare substring starting at i
+        while (j < m && haystack[i + j] == needle[j]) {
+            j++;
+        }
+
+        // If we matched the whole needle
+        if (j == m) {
+            return i;
+        }
+    }
+
+    return -1;
 }
